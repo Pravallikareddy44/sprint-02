@@ -1,0 +1,260 @@
+{
+  "Events": [
+    {
+      "EventID": "evt-001",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-001",
+      "Timestamp": "2026-06-26T10:00:00Z",
+      "Payload": {
+        "FailureType": "service_outage",
+        "Service": "auth-service",
+        "CPUUsage": 5.12,
+        "MemoryUsage": 20,
+        "ResponseTime": 0,
+        "ErrorCount": 100,
+        "ServiceStatus": "down"
+      }
+    },
+    {
+      "EventID": "evt-002",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-002",
+      "Timestamp": "2026-06-26T10:01:00Z",
+      "Payload": {
+        "FailureType": "dependency_failure",
+        "Service": "payment-service",
+        "CPUUsage": 30,
+        "MemoryUsage": 45,
+        "ResponseTime": 1500,
+        "ErrorCount": 40,
+        "ServiceStatus": "degraded"
+      }
+    },
+    {
+      "EventID": "evt-003",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-003",
+      "Timestamp": "2026-06-26T10:02:00Z",
+      "Payload": {
+        "FailureType": "api_gateway_failure",
+        "Service": "api-gateway",
+        "CPUUsage": 25,
+        "MemoryUsage": 35,
+        "ResponseTime": 1800,
+        "ErrorCount": 70,
+        "ServiceStatus": "failed"
+      }
+    },
+    {
+      "EventID": "evt-004",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-004",
+      "Timestamp": "2026-06-26T10:03:00Z",
+      "Payload": {
+        "FailureType": "event_processing_failure",
+        "Service": "message-broker",
+        "CPUUsage": 50,
+        "MemoryUsage": 55,
+        "ResponseTime": 900,
+        "ErrorCount": 45,
+        "ServiceStatus": "degraded"
+      }
+    },
+    {
+      "EventID": "evt-005",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-005",
+      "Timestamp": "2026-06-26T10:04:00Z",
+      "Payload": {
+        "FailureType": "database_slowdown",
+        "Service": "database-service",
+        "CPUUsage": 88,
+        "MemoryUsage": 80,
+        "ResponseTime": 2000,
+        "ErrorCount": 8,
+        "ServiceStatus": "degraded"
+      }
+    },
+    {
+      "EventID": "evt-006",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-006",
+      "Timestamp": "2026-06-26T10:05:00Z",
+      "Payload": {
+        "FailureType": "cache_inconsistency",
+        "Service": "redis-cache",
+        "CPUUsage": 45,
+        "MemoryUsage": 60,
+        "ResponseTime": 750,
+        "ErrorCount": 18,
+        "ServiceStatus": "warning"
+      }
+    },
+    {
+      "EventID": "evt-007",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-007",
+      "Timestamp": "2026-06-26T10:06:00Z",
+      "Payload": {
+        "FailureType": "storage_system_failure",
+        "Service": "storage-service",
+        "CPUUsage": 60,
+        "MemoryUsage": 70,
+        "ResponseTime": 2500,
+        "ErrorCount": 35,
+        "ServiceStatus": "critical"
+      }
+    },
+    {
+      "EventID": "evt-008",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-008",
+      "Timestamp": "2026-06-26T10:07:00Z",
+      "Payload": {
+        "FailureType": "queue_backlogs",
+        "Service": "message-queue",
+        "CPUUsage": 70,
+        "MemoryUsage": 75,
+        "ResponseTime": 3000,
+        "ErrorCount": 5,
+        "ServiceStatus": "backlogged"
+      }
+    },
+{
+      "EventID": "evt-009",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-009",
+      "Timestamp": "2026-06-26T10:08:00Z",
+      "Payload": {
+        "FailureType": "traffic_spike",
+        "Service": "user-service",
+        "CPUUsage": 92,
+        "MemoryUsage": 85,
+        "ResponseTime": 1200,
+        "ErrorCount": 15,
+        "ServiceStatus": "slow"
+      }
+    },
+    {
+      "EventID": "evt-010",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-010",
+      "Timestamp": "2026-06-26T10:09:00Z",
+      "Payload": {
+        "FailureType": "resource_contention",
+        "Service": "compute-node",
+        "CPUUsage": 98,
+        "MemoryUsage": 97,
+        "ResponseTime": 1800,
+        "ErrorCount": 20,
+        "ServiceStatus": "overloaded"
+      }
+    },
+    {
+      "EventID": "evt-011",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-011",
+      "Timestamp": "2026-06-26T10:10:00Z",
+      "Payload": {
+        "FailureType": "dns_name_resolution_failure",
+        "Service": "dns-service",
+        "CPUUsage": 15,
+        "MemoryUsage": 20,
+        "ResponseTime": 0,
+        "ErrorCount": 80,
+        "ServiceStatus": "unreachable"
+      }
+    },
+    {
+      "EventID": "evt-012",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-012",
+      "Timestamp": "2026-06-26T10:11:00Z",
+      "Payload": {
+        "FailureType": "network_partition_failure",
+        "Service": "network-service",
+        "CPUUsage": 35,
+        "MemoryUsage": 40,
+        "ResponseTime": 5000,
+        "ErrorCount": 55,
+        "ServiceStatus": "isolated"
+      }
+    },
+    {
+      "EventID": "evt-013",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-013",
+      "Timestamp": "2026-06-26T10:12:00Z",
+      "Payload": {
+        "FailureType": "configuration_issues",
+        "Service": "config-service",
+        "CPUUsage": 40,
+        "MemoryUsage": 35,
+        "ResponseTime": 1000,
+        "ErrorCount": 25,
+        "ServiceStatus": "misconfigured"
+      }
+    },
+    {
+      "EventID": "evt-014",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-014",
+      "Timestamp": "2026-06-26T10:13:00Z",
+      "Payload": {
+        "FailureType": "deployment_release_failure",
+        "Service": "deployment-service",
+        "CPUUsage": 55,
+        "MemoryUsage": 50,
+        "ResponseTime": 1100,
+        "ErrorCount": 30,
+        "ServiceStatus": "rollback"
+      }
+    },
+    {
+      "EventID": "evt-015",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-015",
+      "Timestamp": "2026-06-26T10:14:00Z",
+      "Payload": {
+        "FailureType": "authentication_identity_failure",
+        "Service": "identity-service",
+        "CPUUsage": 25,
+        "MemoryUsage": 30,
+        "ResponseTime": 500,
+        "ErrorCount": 60,
+        "ServiceStatus": "failed"
+      }
+    },
+    {
+      "EventID": "evt-016",
+      "EventType": "TelemetryReceived",
+      "Source": "telemetry-service",
+      "CorrelationID": "corr-016",
+      "Timestamp": "2026-06-26T10:15:00Z",
+      "Payload": {
+        "FailureType": "cascading_failures",
+        "Service": "api-gateway",
+        "CPUUsage": 95,
+        "MemoryUsage": 90,
+        "ResponseTime": 2500,
+        "ErrorCount": 50,
+        "ServiceStatus": "critical"
+      }
+    }
+  ]
+}
