@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	fmt.PrintLn("jai ballaya")
 	fmt.Println("Health Endpoint Data")
 	fmt.Println("-----------------------------")
 	fmt.Println("Status    :", health.Status)
