@@ -8,8 +8,8 @@
       "Timestamp": "2026-06-26T10:00:00Z",
       "Payload": {
         "FailureType": "service_outage",
-        "Service": "auth-service",
-        "CPUUsage": 5.12,
+        "Service": " AUTH-SERVICE  ",
+        "CPUUsage": 5.123456,
         "MemoryUsage": 20,
         "ResponseTime": 0,
         "ErrorCount": 100,

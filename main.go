@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+	"telemetry-collector/services"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -37,6 +39,9 @@ func main() {
 	fmt.Println("Timestamp :", health.Timestamp)
 	fmt.Println()
 
+	health.Service = strings.TrimSpace(strings.ToLower(health.Service))
+health.Status = strings.TrimSpace(strings.ToLower(health.Status))
+
 	// STEP 2: Read events.json
 	
 
@@ -62,6 +67,27 @@ func main() {
 	for i := range eventFile.Events {
 
 		event := &eventFile.Events[i]
+		fmt.Println("Before Normalization")
+fmt.Println("Service      :", event.Payload.Service)
+fmt.Println("Failure Type :", event.Payload.FailureType)
+fmt.Println("Status       :", event.Payload.ServiceStatus)
+fmt.Printf("CPU Usage    : %.6f\n", event.Payload.CPUUsage)
+fmt.Printf("Memory Usage : %.6f\n", event.Payload.MemoryUsage)
+fmt.Printf("ResponseTime : %.6f\n", event.Payload.ResponseTime)
+fmt.Println("Error Count  :", event.Payload.ErrorCount)
+fmt.Println()
+
+		services.NormalizeTelemetry(&event.Payload)
+
+		fmt.Println("After Normalization")
+fmt.Println("Service      :", event.Payload.Service)
+fmt.Println("Failure Type :", event.Payload.FailureType)
+fmt.Println("Status       :", event.Payload.ServiceStatus)
+fmt.Printf("CPU Usage    : %.2f\n", event.Payload.CPUUsage)
+fmt.Printf("Memory Usage : %.2f\n", event.Payload.MemoryUsage)
+fmt.Printf("ResponseTime : %.2f\n", event.Payload.ResponseTime)
+fmt.Println("Error Count  :", event.Payload.ErrorCount)
+fmt.Println()
 
 		if event.Payload.Service == health.Service &&
 			event.Payload.ServiceStatus == health.Status {
@@ -75,6 +101,8 @@ func main() {
 		fmt.Println("No matching event found.")
 		return
 	}
+	
+	
 
 	fmt.Println()
 	fmt.Println("Matched Event")
@@ -106,6 +134,26 @@ func main() {
 			eventTime = time.Now()
 		}
 	}
+
+
+// Paste the validation code HERE
+
+
+telemetry := models.Telemetry{
+    ServiceName:   matched.Payload.Service,
+    CPUUsage:      matched.Payload.CPUUsage,
+    MemoryUsage:   matched.Payload.MemoryUsage,
+    ResponseTime:  float64(matched.Payload.ResponseTime),
+    ServiceStatus: matched.Payload.ServiceStatus == "up",
+    Timestamp:     eventTime,
+}
+
+err = services.ValidateTelemetry(telemetry)
+if err != nil {
+    panic(err)
+}
+
+
 
 
 	// STEP 5: Connect PostgreSQL
@@ -165,4 +213,105 @@ func main() {
 
 	fmt.Println()
 	fmt.Println("Telemetry inserted successfully!")
+
+log := models.Log{
+	ServiceName: matched.Payload.Service,
+	LogLevel:    "INFO",
+	Message:     "Telemetry inserted successfully",
+	FailureType: matched.Payload.FailureType,
+	EventTime:   eventTime,
+}
+
+err = services.InsertLog(log)
+if err != nil {
+	fmt.Println("Failed to insert log:", err)
+} else {
+	fmt.Println("Log inserted successfully!")
+}
+fmt.Println("\nMetrics Table:")
+
+rows, err := conn.Query(context.Background(), "SELECT * FROM telemetry")
+if err != nil {
+	panic(err)
+}
+defer rows.Close()
+fmt.Println("\n================ METRICS TABLE================")
+fmt.Printf("%-10s %-15s %-8s %-8s %-8s %-8s %-10s\n",
+    "EventID", "Service", "CPU", "Memory", "Resp", "Errors", "Status")
+fmt.Println("--------------------------------------------------------------------------")
+for rows.Next() {
+	var eventID, eventType, source, correlationID string
+	var timestamp time.Time
+	var failureType, service, status string
+	var cpuUsage, memoryUsage, responseTime float64
+	var errorCount int
+
+	err = rows.Scan(
+		&eventID,
+		&eventType,
+		&source,
+		&correlationID,
+		&timestamp,
+		&failureType,
+		&service,
+		&cpuUsage,
+		&memoryUsage,
+		&responseTime,
+		&errorCount,
+		&status,
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%-10s %-15s %-8.2f %-8.2f %-8.2f %-8d %-10s\n",
+    eventID,
+    service,
+    cpuUsage,
+    memoryUsage,
+    responseTime,
+    errorCount,
+    status,
+)
+}
+
+fmt.Println("\nLogs Table:")
+
+rows2, err := conn.Query(context.Background(), "SELECT * FROM logs")
+if err != nil {
+	panic(err)
+}
+defer rows2.Close()
+fmt.Println("\n================== LOGS TABLE ==================")
+fmt.Printf("%-4s %-18s %-8s %-35s %-18s %-20s\n",
+    "ID", "Service", "Level", "Message", "Failure Type", "Event Time")
+fmt.Println("---------------------------------------------------------------------------------------------------------------")
+for rows2.Next() {
+	var id int
+	var serviceName, logLevel, message, failureType string
+	var eventTime time.Time
+
+	err = rows2.Scan(
+		&id,
+		&serviceName,
+		&logLevel,
+		&message,
+		&failureType,
+		&eventTime,
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%-4d %-18s %-8s %-35s %-18s %-20s\n",
+    id,
+    serviceName,
+    logLevel,
+    message,
+    failureType,
+    eventTime.Format("2006-01-02 15:04:05"),
+)
+}
 }
