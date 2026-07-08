@@ -19,9 +19,9 @@ func main() {
 
 	// STEP 1: Get data from Health form nats
 
-	nc, err := nats.Connect("nats://nats:4222")
-	if err != nil {
-		panic(err)
+	nc,err:= NatsConnection()
+	if err!=nil{
+		return 
 	}
 
 	defer nc.Close()
@@ -33,10 +33,12 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-
-	})
+     process(nc,health) 
+	
+	}
+)select {}
 }
-func process(health models.Health) {
+func process(nc *nats.Conn ,health models.Health) {
 	fmt.Println("Health Endpoint Data")
 	fmt.Println("-----------------------------")
 	fmt.Println("Status    :", health.Status)
@@ -299,5 +301,17 @@ func process(health models.Health) {
 			eventTime.Format("2006-01-02 15:04:05"),
 		)
 	}
+	data,err :=json.Marshal(matched)
+	if err!=nil{
+		fmt.Println("faild to convert telemetry event",err)
+     return 
+	}
+	err=nc.Publish("telemetry.events",data)
+	if err!=nil{
+		fmt.Println("failed to publish telemetry")
+
+	}
+	fmt.Println("telemetry event published sucessfullly")
+
 
 }
