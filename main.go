@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
 	"telemetry-collector/services"
@@ -24,10 +23,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer nc.Close()
-	_, err = nc.Subscribe("infrastructure.health", func(msg *nats.Msg) {
 
-		var health models.Health
+	defer nc.Close()
+	var health models.Health
+	_, err = nc.Subscribe("infrastructure.health", func(msg *nats.Msg) {
 
 		err := json.Unmarshal(msg.Data, &health)
 		if err != nil {
@@ -35,9 +34,9 @@ func main() {
 			return
 		}
 
-		ProcessHealth(health)
 	})
-
+}
+func process(health models.Health) {
 	fmt.Println("Health Endpoint Data")
 	fmt.Println("-----------------------------")
 	fmt.Println("Status    :", health.Status)
@@ -300,4 +299,5 @@ func main() {
 			eventTime.Format("2006-01-02 15:04:05"),
 		)
 	}
+
 }
