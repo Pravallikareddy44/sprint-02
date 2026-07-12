@@ -136,12 +136,12 @@
       "Timestamp": "2026-06-26T10:08:00Z",
       "Payload": {
         "FailureType": "traffic_spike",
-        "Service": "user-service",
+        "Service": "auth-service",
         "CPUUsage": 92,
         "MemoryUsage": 85,
         "ResponseTime": 1200,
         "ErrorCount": 15,
-        "ServiceStatus": "slow"
+        "ServiceStatus": "down"
       }
     },
     {
