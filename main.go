@@ -17,26 +17,38 @@ import (
 
 func main() {
 
-	// STEP 1: Get data from Health form nats
+fmt.Println("Main program started")
 
-	nc,err:= NatsConnection()
-	if err!=nil{
-		return 
-	}
+nc, err := NatsConnection()
+if err != nil {
+    panic(err)
+}
 
-	defer nc.Close()
-	var health models.Health
-	_, err = nc.Subscribe("infrastructure.health", func(msg *nats.Msg) {
+fmt.Println("Connected to NATS")
 
-		err := json.Unmarshal(msg.Data, &health)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-     process(nc,health) 
-	
-	}
-)select {}
+_, err = nc.Subscribe("infrastructure.health", func(msg *nats.Msg) {
+
+    fmt.Println("Received a message!")
+
+    var health models.Health
+
+    err := json.Unmarshal(msg.Data, &health)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    process(nc, health)
+})
+
+if err != nil {
+    panic(err)
+}
+
+fmt.Println("Subscribed successfully")
+fmt.Println("Waiting for Health events...")
+
+select {}
 }
 func process(nc *nats.Conn ,health models.Health) {
 	fmt.Println("Health Endpoint Data")
@@ -238,6 +250,18 @@ if err!=nil{
 	panic(err)
 }
 
+
+err = PublishTelemetry(nc, matched)
+if err != nil {
+	fmt.Println("Failed to publish telemetry:", err)
+	continue
+}
+
+fmt.Println("Telemetry published successfully!")
+fmt.Println("Published Event ID:", matched.EventID)
+
+
+
 }
 fmt.Println()
 fmt.Println("All matched events processed successfully!")
@@ -379,17 +403,7 @@ for rows2.Next() {
 		eventTime.Format("2006-01-02 15:04:05"),
 	)
 }
-	data,err :=json.Marshal(matched)
-	if err!=nil{
-		fmt.Println("faild to convert telemetry event",err)
-     return 
-	}
-	err=nc.Publish("telemetry.events",data)
-	if err!=nil{
-		fmt.Println("failed to publish telemetry")
 
-	}
-	fmt.Println("telemetry event published sucessfullly")
 
 
 }
